@@ -50,7 +50,7 @@ class Attachment
   end
 
   def filename
-    @data["file_name"].tr('/','_') # sanitise paths
+    File.basename(@data["file_name"]) # sanitise filenames with contain legacy file paths
   end
 end
 
