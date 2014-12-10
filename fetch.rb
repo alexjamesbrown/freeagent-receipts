@@ -50,7 +50,7 @@ class Attachment
   end
 
   def filename
-    @data["file_name"]
+    File.basename(@data["file_name"]) # sanitise filenames which contain legacy file paths
   end
 end
 
@@ -330,7 +330,7 @@ def retrieve_bills(file_dir)
     csv << ["url", "reference", "file"]
     @bills.each do |bill|
       if bill.attachment?
-        download_file(bill.attachment_url, file_path.join(bill.attachment_filename)) 
+        download_file(bill.attachment_url, file_path.join(bill.attachment_filename))
         csv << [bill.url, bill.reference, bill.attachment_filename]
       end
       print "."
@@ -346,7 +346,7 @@ def retrieve_expenses(file_dir)
     csv << ["url", "user", "category", "dated_on", "native_gross_value", "native_sales_tax_value", "description", "reference", "file"]
     @expenses.each do |expense|
       if expense.attachment?
-        download_file(expense.attachment_url, file_path.join(expense.attachment_filename)) 
+        download_file(expense.attachment_url, file_path.join(expense.attachment_filename))
         csv << [expense.url, expense.user, expense.category, expense.dated_on, expense.native_gross_value, expense.native_sales_tax_value, expense.description, expense.reference, expense.attachment_filename]
       end
       print "."
@@ -400,5 +400,5 @@ if __FILE__ == $0
   retrieve_expenses(path.join("expenses"))
   puts
   puts "done."
-   
+
 end
